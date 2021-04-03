@@ -17,6 +17,7 @@ import com.example.doordashdiscover.requests.RestaurantApi;
 import com.example.doordashdiscover.requests.ServiceGenerator;
 import com.example.doordashdiscover.responses.RestaurantDetailResponse;
 import com.example.doordashdiscover.util.Testing;
+import com.example.doordashdiscover.util.VerticalSpacingItemDecorator;
 import com.example.doordashdiscover.viewmodels.RestaurantListViewModel;
 
 import java.util.ArrayList;
@@ -67,6 +68,9 @@ public class RestaurantListActivity extends BaseActivity implements OnRestaurant
     }
 
     private void initRecyclerView() {
+        VerticalSpacingItemDecorator verticalSpacingItemDecorator = new VerticalSpacingItemDecorator(18);
+        mRecyclerView.addItemDecoration(verticalSpacingItemDecorator);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(this);
         mRecyclerView.setAdapter(mRestaurantRecyclerAdapter);
