@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.doordashdiscover.R;
 import com.example.doordashdiscover.models.Restaurant;
 
@@ -36,6 +38,12 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         vh.name.setText(mRestaurants.get(position).getName());
         vh.description.setText(mRestaurants.get(position).getDescription());
         //todo status, deliveryFee
+
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
+        Glide.with(vh.itemView.getContext())
+                .setDefaultRequestOptions(requestOptions)
+                .load(mRestaurants.get(position).getCover_img_url())
+                .into(vh.image);
     }
 
     @Override
