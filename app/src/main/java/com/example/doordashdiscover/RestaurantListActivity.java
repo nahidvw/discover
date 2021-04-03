@@ -2,10 +2,15 @@ package com.example.doordashdiscover;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.doordashdiscover.adapters.OnRestaurantClickListener;
+import com.example.doordashdiscover.adapters.RestaurantRecyclerAdapter;
 import com.example.doordashdiscover.models.Menu;
 import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.requests.RestaurantApi;
@@ -21,18 +26,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestaurantListActivity extends BaseActivity {
+public class RestaurantListActivity extends BaseActivity implements OnRestaurantClickListener {
 
     private static final String TAG = "RestaurantListActivity";
 
     private RestaurantListViewModel mRestaurantListViewModel;
+    private RecyclerView mRecyclerView;
+    private RestaurantRecyclerAdapter mRestaurantRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_restaurant_list);
+        mRecyclerView = findViewById(R.id.restaurant_List);
 
         mRestaurantListViewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
+        initRecyclerView();
+
         subscribeObservers();
 
         testGetRestaurantsApi();
@@ -44,8 +54,9 @@ public class RestaurantListActivity extends BaseActivity {
         mRestaurantListViewModel.getRestaurants().observe(this, new Observer<List<Restaurant>>() {
             @Override
             public void onChanged(List<Restaurant> restaurants) {
-                if(restaurants != null) {
+                if (restaurants != null) {
                     Testing.printRestaurants(restaurants, TAG);
+                    mRestaurantRecyclerAdapter.setRestaurants(restaurants); //set data to adapter
                 }
             }
         });
@@ -53,6 +64,12 @@ public class RestaurantListActivity extends BaseActivity {
 
     private void getRestaurantsApi(String lat, String lng, int offset, int limit) {
         mRestaurantListViewModel.getRestaurantsApi(lat, lng, offset, limit);
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mRestaurantRecyclerAdapter);
     }
 
     private void testRestaurantDetailRequest() {
@@ -88,5 +105,10 @@ public class RestaurantListActivity extends BaseActivity {
                 "-122.139956",
                 0,
                 50);
+    }
+
+    @Override
+    public void onRestaurantClick(int position) {
+
     }
 }

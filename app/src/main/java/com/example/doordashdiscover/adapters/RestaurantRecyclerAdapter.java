@@ -19,8 +19,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     private List<Restaurant> mRestaurants;
     private OnRestaurantClickListener mOnRestaurantClickListener;
 
-    public RestaurantRecyclerAdapter(List<Restaurant> mRestaurants, OnRestaurantClickListener mOnRestaurantClickListener) {
-        this.mRestaurants = mRestaurants;
+    public RestaurantRecyclerAdapter(OnRestaurantClickListener mOnRestaurantClickListener) {
         this.mOnRestaurantClickListener = mOnRestaurantClickListener;
     }
 
@@ -48,7 +47,10 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return mRestaurants.size();
+        if(mRestaurants != null) {
+            return mRestaurants.size();
+        }
+        return 0;
     }
 
     public void setRestaurants(List<Restaurant> restaurants) {
