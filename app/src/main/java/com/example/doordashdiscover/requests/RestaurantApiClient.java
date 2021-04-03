@@ -86,11 +86,15 @@ public class RestaurantApiClient {
                     List<Restaurant> list = new ArrayList<>(((RestaurantResponse)response.body()).getRestaurants());
 
                     //if we are not beginning of list, then keep adding restaurants in current list
-                    if (offset != 0) {
+                    if (offset == 0) {
+                        mRestaurants.postValue(list);
+                    } else {
                         List<Restaurant> currentRestaurants = mRestaurants.getValue();
-                        currentRestaurants.addAll(list);
+                        if(currentRestaurants != null) {
+                            currentRestaurants.addAll(list);
+                        }
+                        mRestaurants.postValue(currentRestaurants);
                     }
-                    mRestaurants.postValue(list);
                 } else {
                     String error = response.errorBody().string();
                     Log.e(TAG, "run: " + error);

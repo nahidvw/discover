@@ -1,5 +1,6 @@
 package com.example.doordashdiscover;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -74,6 +75,16 @@ public class RestaurantListActivity extends BaseActivity implements OnRestaurant
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(this);
         mRecyclerView.setAdapter(mRestaurantRecyclerAdapter);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if(!mRecyclerView.canScrollVertically(1)) {
+                    //fetch the next 50
+                    mRestaurantListViewModel.getNextRestaurantPage();
+                }
+            }
+        });
     }
 
     private void testRestaurantDetailRequest() {
@@ -108,7 +119,7 @@ public class RestaurantListActivity extends BaseActivity implements OnRestaurant
                 "37.422740",
                 "-122.139956",
                 0,
-                50);
+                10);
     }
 
     @Override

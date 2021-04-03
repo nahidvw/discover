@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RestaurantListViewModel extends ViewModel {
 
-    private RestaurantRepository mRestaurantRepository;
+    private final RestaurantRepository mRestaurantRepository;
 
     public RestaurantListViewModel() {
         mRestaurantRepository = RestaurantRepository.getInstance();
@@ -21,5 +21,9 @@ public class RestaurantListViewModel extends ViewModel {
 
     public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
         mRestaurantRepository.getRestaurantsApi(lat, lng, offset, limit);
+    }
+
+    public void getNextRestaurantPage() {
+        mRestaurantRepository.getNextRestaurantPage();
     }
 }

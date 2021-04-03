@@ -9,8 +9,14 @@ import com.example.doordashdiscover.requests.RestaurantApiClient;
 import java.util.List;
 
 public class RestaurantRepository {
+    private static final int PAGE_ITEMS = 10;
     private static RestaurantRepository instance;
-    private RestaurantApiClient mRestaurantApiClient;
+    private final RestaurantApiClient mRestaurantApiClient;
+
+    private String lat;
+    private String lng;
+    private int offset;
+    private int limit;
 
     public static RestaurantRepository getInstance() {
         if(instance == null){
@@ -28,6 +34,14 @@ public class RestaurantRepository {
     }
 
     public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
+        this.lat = lat;
+        this.lng = lng;
+        this.offset = offset;
+        this.limit = limit;
         mRestaurantApiClient.getRestaurantsApi(lat, lng, offset, limit);
+    }
+
+    public void getNextRestaurantPage() {
+        getRestaurantsApi(lat, lng, offset + PAGE_ITEMS, limit);
     }
 }
