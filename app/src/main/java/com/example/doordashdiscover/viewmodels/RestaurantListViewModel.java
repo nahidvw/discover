@@ -18,4 +18,8 @@ public class RestaurantListViewModel extends ViewModel {
     public LiveData<List<Restaurant>> getRestaurants() {
         return mRestaurantRepository.getRestaurants();
     }
+
+    public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
+        mRestaurantRepository.getRestaurantsApi(lat, lng, offset, limit);
+    }
 }

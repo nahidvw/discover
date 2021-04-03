@@ -23,7 +23,7 @@ import static com.example.doordashdiscover.util.Constants.NETWORK_TIMEOUT;
 public class RestaurantApiClient {
     private static final String TAG = "RestaurantApiClient";
     private static RestaurantApiClient instance;
-    private MutableLiveData<List<Restaurant>> mRestaurants;
+    private final MutableLiveData<List<Restaurant>> mRestaurants;
     private RetrieveRestaurantsRunnable mRetrieveRestaurantsRunnable;
 
     public static RestaurantApiClient getInstance() {

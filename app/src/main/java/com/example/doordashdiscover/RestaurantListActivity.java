@@ -11,7 +11,7 @@ import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.requests.RestaurantApi;
 import com.example.doordashdiscover.requests.ServiceGenerator;
 import com.example.doordashdiscover.responses.RestaurantDetailResponse;
-import com.example.doordashdiscover.responses.RestaurantResponse;
+import com.example.doordashdiscover.util.Testing;
 import com.example.doordashdiscover.viewmodels.RestaurantListViewModel;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class RestaurantListActivity extends BaseActivity {
 
-    private static final String TAG = "DiscoverActivity";
+    private static final String TAG = "RestaurantListActivity";
 
     private RestaurantListViewModel mRestaurantListViewModel;
 
@@ -35,7 +35,7 @@ public class RestaurantListActivity extends BaseActivity {
         mRestaurantListViewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
         subscribeObservers();
 
-
+        testGetRestaurantsApi();
         //testRetrofitRequest();
         //testRestaurantDetailRequest();
     }
@@ -44,9 +44,15 @@ public class RestaurantListActivity extends BaseActivity {
         mRestaurantListViewModel.getRestaurants().observe(this, new Observer<List<Restaurant>>() {
             @Override
             public void onChanged(List<Restaurant> restaurants) {
-
+                if(restaurants != null) {
+                    Testing.printRestaurants(restaurants, TAG);
+                }
             }
         });
+    }
+
+    private void getRestaurantsApi(String lat, String lng, int offset, int limit) {
+        mRestaurantListViewModel.getRestaurantsApi(lat, lng, offset, limit);
     }
 
     private void testRestaurantDetailRequest() {
@@ -76,36 +82,11 @@ public class RestaurantListActivity extends BaseActivity {
         });
     }
 
-    private void testRetrofitRequest() {
-        RestaurantApi restaurantApi = ServiceGenerator.getRestaurantApi();
-        Call<RestaurantResponse> restaurantResponseCall = restaurantApi.
-                getRestaurants(
-                        "37.422740",
-                        "-122.139956",
-                        "0",
-                        "50"
-                );
-
-        restaurantResponseCall.enqueue(new Callback<RestaurantResponse>() {
-            @Override
-            public void onResponse(Call<RestaurantResponse> call, Response<RestaurantResponse> response) {
-                Log.d(TAG, "onResponse: server responses: " + response.body().toString());
-                if(response.code() == 200) {
-                    Log.d(TAG, "onResponse: "+ response.body().toString());
-                    List<Restaurant> restaurants = new ArrayList<>(response.body().getRestaurants());
-                    for(Restaurant r : restaurants) {
-                        Log.d(TAG, "onResponse: "+ r.getName());
-                    }
-                } else {
-                    Log.d(TAG, "onResponse: "+ response.errorBody().toString());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<RestaurantResponse> call, Throwable t) {
-
-            }
-        });
+    private void testGetRestaurantsApi() {
+        getRestaurantsApi(
+                "37.422740",
+                "-122.139956",
+                0,
+                50);
     }
 }

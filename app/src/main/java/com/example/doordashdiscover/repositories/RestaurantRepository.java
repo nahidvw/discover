@@ -26,4 +26,8 @@ public class RestaurantRepository {
     public LiveData<List<Restaurant>> getRestaurants() {
         return mRestaurantApiClient.getRestaurants();
     }
+
+    public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
+        mRestaurantApiClient.getRestaurantsApi(lat, lng, offset, limit);
+    }
 }
