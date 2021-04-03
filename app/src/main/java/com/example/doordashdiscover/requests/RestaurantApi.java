@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface DiscoverApi {
+public interface RestaurantApi {
     //Get restaurants
     @GET("v1/store_feed")
     Call<RestaurantResponse> getRestaurants(

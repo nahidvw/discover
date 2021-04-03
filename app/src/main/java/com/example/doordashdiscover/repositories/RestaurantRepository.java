@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.doordashdiscover.models.Restaurant;
+import com.example.doordashdiscover.requests.RestaurantApiClient;
 
 import java.util.List;
 
 public class RestaurantRepository {
     private static RestaurantRepository instance;
-    private MutableLiveData<List<Restaurant>> mRestaurants;
+    private RestaurantApiClient mRestaurantApiClient;
 
     public static RestaurantRepository getInstance() {
         if(instance == null){
@@ -19,10 +20,10 @@ public class RestaurantRepository {
     }
 
     private RestaurantRepository() {
-        mRestaurants = new MutableLiveData<>();
+        mRestaurantApiClient = RestaurantApiClient.getInstance();
     }
 
     public LiveData<List<Restaurant>> getRestaurants() {
-        return mRestaurants;
+        return mRestaurantApiClient.getRestaurants();
     }
 }

@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.example.doordashdiscover.models.Menu;
 import com.example.doordashdiscover.models.Restaurant;
-import com.example.doordashdiscover.requests.DiscoverApi;
+import com.example.doordashdiscover.requests.RestaurantApi;
 import com.example.doordashdiscover.requests.ServiceGenerator;
 import com.example.doordashdiscover.responses.RestaurantDetailResponse;
 import com.example.doordashdiscover.responses.RestaurantResponse;
@@ -50,8 +50,8 @@ public class RestaurantListActivity extends BaseActivity {
     }
 
     private void testRestaurantDetailRequest() {
-        DiscoverApi discoverApi = ServiceGenerator.getDiscoverApi();
-        Call<RestaurantDetailResponse> restaurantDetailResponseCall = discoverApi.
+        RestaurantApi restaurantApi = ServiceGenerator.getRestaurantApi();
+        Call<RestaurantDetailResponse> restaurantDetailResponseCall = restaurantApi.
                 getRestaurantDetail("1");
 
         restaurantDetailResponseCall.enqueue(new Callback<RestaurantDetailResponse>() {
@@ -77,8 +77,8 @@ public class RestaurantListActivity extends BaseActivity {
     }
 
     private void testRetrofitRequest() {
-        DiscoverApi discoverApi = ServiceGenerator.getDiscoverApi();
-        Call<RestaurantResponse> restaurantResponseCall = discoverApi.
+        RestaurantApi restaurantApi = ServiceGenerator.getRestaurantApi();
+        Call<RestaurantResponse> restaurantResponseCall = restaurantApi.
                 getRestaurants(
                         "37.422740",
                         "-122.139956",

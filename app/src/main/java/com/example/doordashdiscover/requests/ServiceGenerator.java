@@ -13,9 +13,9 @@ public class ServiceGenerator {
 
     private static Retrofit retrofit = retrofitBuilder.build();
 
-    private static DiscoverApi discoverApi = retrofit.create(DiscoverApi.class);
+    private static RestaurantApi restaurantApi = retrofit.create(RestaurantApi.class);
 
-    public static DiscoverApi getDiscoverApi() {
-        return discoverApi;
+    public static RestaurantApi getRestaurantApi() {
+        return restaurantApi;
     }
 }
