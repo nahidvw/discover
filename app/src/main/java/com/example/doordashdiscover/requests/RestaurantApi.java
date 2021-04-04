@@ -1,6 +1,6 @@
 package com.example.doordashdiscover.requests;
 
-import com.example.doordashdiscover.responses.RestaurantDetailResponse;
+import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.responses.RestaurantResponse;
 
 import retrofit2.Call;
@@ -20,7 +20,7 @@ public interface RestaurantApi {
 
     //Get restaurant details
     @GET("v2/restaurant/{id}")
-    Call<RestaurantDetailResponse> getRestaurantDetail(
+    Call<Restaurant> getRestaurantDetail(
             @Path("id") String id
     );
 }
