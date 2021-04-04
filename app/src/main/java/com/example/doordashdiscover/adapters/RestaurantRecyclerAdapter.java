@@ -31,7 +31,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         switch (viewType) {
             case LOADING_TYPE: {
                 view = LayoutInflater.from(parent.getContext())
@@ -105,5 +105,12 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     public void setRestaurants(List<Restaurant> restaurants) {
         mRestaurants = restaurants;
         notifyDataSetChanged();
+    }
+
+    public Restaurant getSelectedRestaurant(int position) {
+        if(mRestaurants != null && mRestaurants.size() > 0) {
+            return mRestaurants.get(position);
+        }
+        return null;
     }
 }

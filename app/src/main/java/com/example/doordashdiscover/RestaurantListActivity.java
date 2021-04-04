@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.util.Log;
@@ -124,6 +125,8 @@ public class RestaurantListActivity extends BaseActivity implements OnRestaurant
 
     @Override
     public void onRestaurantClick(int position) {
-
+        Intent intent = new Intent(this, RestaurantDetailActivity.class);
+        intent.putExtra(RestaurantDetailActivity.RESTAURANT_DETAIL_EXTRA, mRestaurantRecyclerAdapter.getSelectedRestaurant(position));
+        startActivity(intent);
     }
 }
