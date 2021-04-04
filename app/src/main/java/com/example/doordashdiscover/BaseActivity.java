@@ -1,5 +1,6 @@
 package com.example.doordashdiscover;
 
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
@@ -18,5 +19,9 @@ public class BaseActivity extends AppCompatActivity {
 
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
         super.setContentView(constraintLayout);
+    }
+
+    public void showProgressBar(boolean visibility){
+        mProgressBar.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
     }
 }

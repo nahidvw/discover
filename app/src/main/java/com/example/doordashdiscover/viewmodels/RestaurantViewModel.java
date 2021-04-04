@@ -8,6 +8,7 @@ import com.example.doordashdiscover.repositories.RestaurantRepository;
 
 public class RestaurantViewModel extends ViewModel {
     private final RestaurantRepository mRestaurantRepository;
+    private String mRestaurantId;
 
     public RestaurantViewModel() {
         this.mRestaurantRepository = RestaurantRepository.getInstance();
@@ -18,6 +19,11 @@ public class RestaurantViewModel extends ViewModel {
     }
 
     public void getRestaurantApi(String id) {
+        mRestaurantId = id;
         mRestaurantRepository.getRestaurantApi(id);
+    }
+
+    public String getRestaurantId() {
+        return mRestaurantId;
     }
 }

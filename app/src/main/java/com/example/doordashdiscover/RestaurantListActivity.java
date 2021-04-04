@@ -1,6 +1,7 @@
 package com.example.doordashdiscover;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ import com.example.doordashdiscover.viewmodels.RestaurantListViewModel;
 
 import java.util.List;
 
-public class RestaurantListActivity extends BaseActivity implements OnRestaurantClickListener {
+public class RestaurantListActivity extends AppCompatActivity implements OnRestaurantClickListener {
 
     private static final String TAG = "RestaurantListActivity";
 

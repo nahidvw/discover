@@ -55,7 +55,8 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             RestaurantViewHolder vh = (RestaurantViewHolder) holder;
             vh.name.setText(mRestaurants.get(position).getName());
             vh.description.setText(mRestaurants.get(position).getDescription());
-            //todo status, deliveryFee
+            vh.status.setText(mRestaurants.get(position).getStatus_type());
+            vh.deliveryFee.setText(String.valueOf(mRestaurants.get(position).getDeliveryFee()));
 
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(vh.itemView.getContext())
