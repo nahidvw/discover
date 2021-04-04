@@ -36,7 +36,7 @@
                 android:id="@+id/header_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/restaurant_header_image_height"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/restaurant_details_name"
