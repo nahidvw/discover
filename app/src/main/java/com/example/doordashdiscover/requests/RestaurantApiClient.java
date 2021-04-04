@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.doordashdiscover.AppExecutors;
 import com.example.doordashdiscover.models.Restaurant;
+import com.example.doordashdiscover.models.RestaurantDetails;
 import com.example.doordashdiscover.responses.RestaurantResponse;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class RestaurantApiClient {
     private static final String TAG = "RestaurantApiClient";
     private static RestaurantApiClient instance;
 
-    private final MutableLiveData<Restaurant> mRestaurant;
+    private final MutableLiveData<RestaurantDetails> mRestaurant;
     private final MutableLiveData<List<Restaurant>> mRestaurants;
 
     private RetrieveRestaurantRunnable mRetrieveRestaurantRunnable;
@@ -42,7 +43,7 @@ public class RestaurantApiClient {
         mRestaurants = new MutableLiveData<>();
     }
 
-    public LiveData<Restaurant> getRestaurant() {
+    public LiveData<RestaurantDetails> getRestaurant() {
         return mRestaurant;
     }
 
@@ -97,14 +98,14 @@ public class RestaurantApiClient {
         @Override
         public void run() {
             try {
-                Response<Restaurant> response = getRestaurant(id).execute();  //this line will be executed in background thread
+                Response<RestaurantDetails> response = getRestaurant(id).execute();  //this line will be executed in background thread
                 if(cancelRequest) {
                     return;
                 }
 
                 if(response.code() == 200) {
                     if(response.body() != null) {
-                        Restaurant restaurant = response.body();
+                        RestaurantDetails restaurant = response.body();
                         mRestaurant.postValue(restaurant);
                     }
                 } else {
@@ -121,7 +122,7 @@ public class RestaurantApiClient {
             }
         }
 
-        private Call<Restaurant> getRestaurant(String id) {
+        private Call<RestaurantDetails> getRestaurant(String id) {
             return ServiceGenerator.getRestaurantApi().getRestaurantDetail(id);
         }
 

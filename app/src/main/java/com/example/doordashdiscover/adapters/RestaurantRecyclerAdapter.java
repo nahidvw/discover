@@ -1,5 +1,7 @@
 package com.example.doordashdiscover.adapters;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +25,15 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     private List<Restaurant> mRestaurants;
     private OnRestaurantClickListener mOnRestaurantClickListener;
+    private Context mContext;
 
-    public RestaurantRecyclerAdapter(OnRestaurantClickListener mOnRestaurantClickListener) {
+    public RestaurantRecyclerAdapter(OnRestaurantClickListener mOnRestaurantClickListener, Context context) {
         this.mOnRestaurantClickListener = mOnRestaurantClickListener;
+        this.mContext = context;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     @NonNull
@@ -55,8 +63,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             RestaurantViewHolder vh = (RestaurantViewHolder) holder;
             vh.name.setText(mRestaurants.get(position).getName());
             vh.description.setText(mRestaurants.get(position).getDescription());
-            vh.status.setText(mRestaurants.get(position).getStatus_type());
-            vh.deliveryFee.setText(String.valueOf(mRestaurants.get(position).getDeliveryFee()));
+            vh.status.setText(TextUtils.isEmpty(mRestaurants.get(position).getDisplayStatus())
+                    ? "" : getContext().getResources().getString(R.string.status_string, mRestaurants.get(position).getDisplayStatus()));
+            vh.deliveryFee.setText(String.valueOf(mRestaurants.get(position).getDisplay_delivery_fee()));
 
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(vh.itemView.getContext())

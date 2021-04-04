@@ -60,7 +60,7 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
         mRecyclerView.addItemDecoration(verticalSpacingItemDecorator);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(this);
+        mRestaurantRecyclerAdapter = new RestaurantRecyclerAdapter(this, this);
         mRecyclerView.setAdapter(mRestaurantRecyclerAdapter);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

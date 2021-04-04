@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.doordashdiscover.models.Restaurant;
+import com.example.doordashdiscover.models.RestaurantDetails;
 import com.example.doordashdiscover.repositories.RestaurantRepository;
 
 public class RestaurantViewModel extends ViewModel {
@@ -14,7 +15,7 @@ public class RestaurantViewModel extends ViewModel {
         this.mRestaurantRepository = RestaurantRepository.getInstance();
     }
 
-    public LiveData<Restaurant> getRestaurant() {
+    public LiveData<RestaurantDetails> getRestaurant() {
         return mRestaurantRepository.getRestaurant();
     }
 

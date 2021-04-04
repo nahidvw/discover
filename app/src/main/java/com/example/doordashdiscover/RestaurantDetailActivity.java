@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.doordashdiscover.databinding.ActivityRestaurantDetailBinding;
 import com.example.doordashdiscover.models.Restaurant;
+import com.example.doordashdiscover.models.RestaurantDetails;
 import com.example.doordashdiscover.viewmodels.RestaurantViewModel;
 
 import java.util.Objects;
@@ -77,7 +78,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setRestaurantDetailViewProperties(Restaurant restaurant) {
+    private void setRestaurantDetailViewProperties(RestaurantDetails restaurant) {
         if(restaurant != null) {
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(this)
@@ -88,8 +89,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.restaurantDetailsName.setText(TextUtils.isEmpty(restaurant.getName()) ? "" : restaurant.getName());
             binding.restaurantDetailsDescription.setText(TextUtils.isEmpty(restaurant.getDescription()) ? "" : restaurant.getDescription());
             binding.restaurantDetailsStatus.setText(TextUtils.isEmpty(restaurant.getStatus_type()) ? "" : restaurant.getStatus_type());
-            binding.restaurantDetailsRating.setText(TextUtils.isEmpty(restaurant.getAverageRating()) ? "" : restaurant.getAverageRating());
-            binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(restaurant.getDeliveryFee()) ? "" : restaurant.getDeliveryFee());
+            binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getAverage_Rating())) ? "" : String.valueOf(restaurant.getAverage_Rating()));
+            binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDeliveryFee())) ? "" : String.valueOf(restaurant.getDeliveryFee()));
 
             binding.tagContainer.removeAllViews();
             for(String tag : restaurant.getTags()) {

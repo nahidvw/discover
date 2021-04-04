@@ -3,39 +3,29 @@ package com.example.doordashdiscover.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Arrays;
+import com.example.doordashdiscover.R;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Restaurant implements Parcelable {
     private String id;
     private String name;
     private String description;
     private String cover_img_url;
-    private String header_img_url;
-    private String phone_number;
-    private Menu[] menus;
-    private String[] tags;
-    private String status_type;
-    private String deliveryFee;
-    private String averageRating;
-    private String numberOfRatings;
+    private String display_delivery_fee;
+    private Status status;
+    private transient String displayStatus;
 
-    public Restaurant(String id, String name, String description, String cover_img_url, String header_img_url, String phone_number, Menu[] menus, String[] tags, String status_type, String deliveryFee, String averageRating, String numberOfRatings) {
+    public Restaurant(){
+    }
+
+    public Restaurant(String id, String name, String description, String cover_img_url, String display_delivery_fee, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cover_img_url = cover_img_url;
-        this.header_img_url = header_img_url;
-        this.phone_number = phone_number;
-        this.menus = menus;
-        this.tags = tags;
-        this.status_type = status_type;
-        this.deliveryFee = deliveryFee;
-        this.averageRating = averageRating;
-        this.numberOfRatings = numberOfRatings;
-    }
-
-    public Restaurant(){
-        //empty constructor
+        this.display_delivery_fee = display_delivery_fee;
+        this.status = status;
     }
 
     public String getId() {
@@ -70,68 +60,28 @@ public class Restaurant implements Parcelable {
         this.cover_img_url = cover_img_url;
     }
 
-    public String getHeader_img_url() {
-        return header_img_url;
+    public String getDisplay_delivery_fee() {
+        return display_delivery_fee;
     }
 
-    public void setHeader_img_url(String header_img_url) {
-        this.header_img_url = header_img_url;
+    public void setDisplay_delivery_fee(String display_delivery_fee) {
+        this.display_delivery_fee = display_delivery_fee;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public Menu[] getMenus() {
-        return menus;
-    }
-
-    public void setMenus(Menu[] menus) {
-        this.menus = menus;
-    }
-
-    public String[] getTags() {
-        return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
-
-    public String getStatus_type() {
-        return status_type;
-    }
-
-    public void setStatus_type(String status_type) {
-        this.status_type = status_type;
-    }
-
-    public String getDeliveryFee() {
-        return deliveryFee;
-    }
-
-    public void setDeliveryFee(String deliveryFee) {
-        this.deliveryFee = deliveryFee;
-    }
-
-    public String getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(String averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public String getNumberOfRatings() {
-        return numberOfRatings;
-    }
-
-    public void setNumberOfRatings(String numberOfRatings) {
-        this.numberOfRatings = numberOfRatings;
+    public String getDisplayStatus() {
+        displayStatus = "";
+        if(status.isAsap_available() && status.getAsap_minutes_range().length != 0) {
+            displayStatus = String.valueOf(status.getAsap_minutes_range()[0]);
+        }
+        return displayStatus;
     }
 
     @Override
@@ -141,21 +91,18 @@ public class Restaurant implements Parcelable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", cover_img_url='" + cover_img_url + '\'' +
-                ", header_img_url='" + header_img_url + '\'' +
-                ", phone_number='" + phone_number + '\'' +
-                ", menus=" + Arrays.toString(menus) +
-                ", tags=" + Arrays.toString(tags) +
-                ", status='" + status_type + '\'' +
-                ", deliveryFee=" + deliveryFee +
-                ", averageRating=" + averageRating +
-                ", numberOfRatings=" + numberOfRatings +
+                ", display_delivery_fee='" + display_delivery_fee + '\'' +
+                ", status=" + status +
                 '}';
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    protected Restaurant(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        cover_img_url = in.readString();
+        display_delivery_fee = in.readString();
+        status = in.readParcelable(Status.class.getClassLoader());
     }
 
     @Override
@@ -164,29 +111,13 @@ public class Restaurant implements Parcelable {
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(cover_img_url);
-        dest.writeString(header_img_url);
-        dest.writeString(phone_number);
-        dest.writeTypedArray(menus, flags);
-        dest.writeStringArray(tags);
-        dest.writeString(status_type);
-        dest.writeString(deliveryFee);
-        dest.writeString(averageRating);
-        dest.writeString(numberOfRatings);
+        dest.writeString(display_delivery_fee);
+        dest.writeParcelable(status, flags);
     }
 
-    protected Restaurant(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        description = in.readString();
-        cover_img_url = in.readString();
-        header_img_url = in.readString();
-        phone_number = in.readString();
-        menus = in.createTypedArray(Menu.CREATOR);
-        tags = in.createStringArray();
-        status_type = in.readString();
-        deliveryFee = in.readString();
-        averageRating = in.readString();
-        numberOfRatings = in.readString();
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {

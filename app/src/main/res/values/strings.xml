@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Discover</string>
     <string name="tags_label">Tags:</string>
+    <string name="status_string">%1s Mins</string>
 
 
     <string name="restaurant_name">Restaurant Name</string>
