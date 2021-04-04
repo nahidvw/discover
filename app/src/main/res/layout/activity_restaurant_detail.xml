@@ -96,11 +96,21 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tags_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fee_status"
+                android:text="@string/tags_label"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/tag_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fee_status"
+                android:layout_below="@+id/tags_label"
                 android:orientation="vertical"
                 android:padding="10dp"/>
         </RelativeLayout>

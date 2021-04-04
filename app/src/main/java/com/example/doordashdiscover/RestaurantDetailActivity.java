@@ -5,6 +5,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +21,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.doordashdiscover.databinding.ActivityRestaurantDetailBinding;
 import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.viewmodels.RestaurantViewModel;
+
+import java.util.Objects;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private static final String TAG = "RestaurantDetailActivity";
@@ -40,15 +45,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void subscribeObservers() {
-        mRestaurantViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
-            @Override
-            public void onChanged(Restaurant restaurant) {
-                if (restaurant != null) {
-                    if(restaurant.getId().equals(mRestaurantViewModel.getRestaurantId())) {
-                        getSupportActionBar().setTitle(restaurant.getName());
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                        setRestaurantDetailViewProperties(restaurant);
-                    }
+        mRestaurantViewModel.getRestaurant().observe(this, restaurant -> {
+            if (restaurant != null) {
+                if(restaurant.getId().equals(mRestaurantViewModel.getRestaurantId())) {
+                    Objects.requireNonNull(getSupportActionBar()).setTitle(restaurant.getName());
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    setRestaurantDetailViewProperties(restaurant);
                 }
             }
         });
@@ -90,16 +92,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(restaurant.getDeliveryFee()) ? "" : restaurant.getDeliveryFee());
 
             binding.tagContainer.removeAllViews();
-//            for(String tag : restaurant.getTags()) {
-//                TextView textView = new TextView(this);
-//                textView.setText(tag);
-//                textView.setTextSize(R.dimen.text_size);
-//                textView.setLayoutParams(new LinearLayout.LayoutParams(
-//                        ViewGroup.LayoutParams.WRAP_CONTENT,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT
-//                ));
-//                mTagContainer.addView(textView);
-//            }
+            for(String tag : restaurant.getTags()) {
+                TextView textView = new TextView(this);
+                textView.setText(tag);
+                textView.setTextSize(16);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
+                binding.tagContainer.addView(textView);
+            }
 
             showParent();
             binding.detailLoadingSpinner.setVisibility(View.GONE);
