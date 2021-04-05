@@ -7,6 +7,10 @@ import com.example.doordashdiscover.repositories.RestaurantRepository;
 
 import java.util.List;
 
+import static com.example.doordashdiscover.util.Constants.PAGE_ITEMS;
+import static com.example.doordashdiscover.util.Constants.QUERY_LATITUDE;
+import static com.example.doordashdiscover.util.Constants.QUERY_LONGITUDE;
+
 public class RestaurantListViewModel extends ViewModel {
 
     private final RestaurantRepository mRestaurantRepository;
@@ -23,8 +27,8 @@ public class RestaurantListViewModel extends ViewModel {
         return mRestaurantRepository.isQueryExhausted();
     }
 
-    public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
-        mRestaurantRepository.getRestaurantsApi(lat, lng, offset, limit);
+    public void getRestaurantsApi() {
+        mRestaurantRepository.getRestaurantsApi(QUERY_LATITUDE, QUERY_LONGITUDE, 0, PAGE_ITEMS);
     }
 
     public void getNextRestaurantPage() {

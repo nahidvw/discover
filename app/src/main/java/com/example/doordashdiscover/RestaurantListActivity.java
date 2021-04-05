@@ -1,26 +1,21 @@
 package com.example.doordashdiscover;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doordashdiscover.adapters.OnRestaurantClickListener;
 import com.example.doordashdiscover.adapters.RestaurantRecyclerAdapter;
-import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.util.VerticalSpacingItemDecorator;
 import com.example.doordashdiscover.viewmodels.RestaurantListViewModel;
-
-import java.util.List;
 
 public class RestaurantListActivity extends AppCompatActivity implements OnRestaurantClickListener {
 
@@ -37,59 +32,38 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
         setContentView(R.layout.activity_restaurant_list);
         mRecyclerView = findViewById(R.id.restaurant_List);
         mRetryView = findViewById(R.id.retry);
-        mRetryView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testGetRestaurantsApi();
-            }
-        });
+        mRetryView.setOnClickListener(v -> getRestaurantsApi());
 
         mRestaurantListViewModel = new ViewModelProvider(this).get(RestaurantListViewModel.class);
         initRecyclerView();
         subscribeObservers();
-        testGetRestaurantsApi();
+        getRestaurantsApi();
     }
 
     private void subscribeObservers() {
-        mRestaurantListViewModel.getRestaurants().observe(this, new Observer<List<Restaurant>>() {
-            @Override
-            public void onChanged(List<Restaurant> restaurants) {
-                if (restaurants != null) {
-                    hideRetryScreen();
-                    mRestaurantRecyclerAdapter.setRestaurants(restaurants); //set data to adapter
-                } else {
+        mRestaurantListViewModel.getRestaurants().observe(this, restaurants -> {
+            if (restaurants != null) {
+                hideRetryScreen();
+                mRestaurantRecyclerAdapter.setRestaurants(restaurants); //set data to adapter
+            } else {
+                displayRetryScreen();
+            }
+        });
+
+        mRestaurantListViewModel.isQueryExhausted().observe(this, aBoolean -> {
+            if(aBoolean) {
+                Log.d(TAG, "onChanged: query is exhausted");
+                if(mRestaurantListViewModel.getRestaurants().getValue() == null) {
                     displayRetryScreen();
-                }
-            }
-        });
-
-        mRestaurantListViewModel.isQueryExhausted().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean) {
-                    Log.d(TAG, "onChanged: query is exhausted");
-                    if(mRestaurantListViewModel.getRestaurants().getValue() == null) {
-                        displayRetryScreen();
-                    } else {
-                        mRestaurantRecyclerAdapter.setQueryExhausted();
-                    }
+                } else {
+                    mRestaurantRecyclerAdapter.setQueryExhausted();
                 }
             }
         });
     }
 
-    private void displayRetryScreen() {
-        mRetryView.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
-    }
-
-    private void hideRetryScreen() {
-        mRetryView.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void getRestaurantsApi(String lat, String lng, int offset, int limit) {
-        mRestaurantListViewModel.getRestaurantsApi(lat, lng, offset, limit);
+    private void getRestaurantsApi() {
+        mRestaurantListViewModel.getRestaurantsApi();
     }
 
     private void initRecyclerView() {
@@ -111,18 +85,20 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
         });
     }
 
-    private void testGetRestaurantsApi() {
-        getRestaurantsApi(
-                "37.422740",
-                "-122.139956",
-                0,
-                100);
-    }
-
     @Override
     public void onRestaurantClick(int position) {
         Intent intent = new Intent(this, RestaurantDetailActivity.class);
         intent.putExtra(RestaurantDetailActivity.RESTAURANT_DETAIL_EXTRA, mRestaurantRecyclerAdapter.getSelectedRestaurant(position));
         startActivity(intent);
+    }
+
+    private void displayRetryScreen() {
+        mRetryView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    private void hideRetryScreen() {
+        mRetryView.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 }

@@ -1,9 +1,10 @@
 package com.example.doordashdiscover.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.models.RestaurantDetails;
@@ -11,14 +12,16 @@ import com.example.doordashdiscover.requests.RestaurantApiClient;
 
 import java.util.List;
 
+import static com.example.doordashdiscover.util.Constants.PAGE_ITEMS;
+
 public class RestaurantRepository {
-    private static final int PAGE_ITEMS = 100;
+    private static final String TAG = "RestaurantRepository";
     private static RestaurantRepository instance;
     private final RestaurantApiClient mRestaurantApiClient;
-    private MutableLiveData<Boolean> mIsQueryExhausted = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mIsQueryExhausted = new MutableLiveData<>();
 
     //use MediatorLiveData to make a change before returning live data
-    private MediatorLiveData<List<Restaurant>> mRestaurants = new MediatorLiveData<>();
+    private final MediatorLiveData<List<Restaurant>> mRestaurants = new MediatorLiveData<>();
 
     private String lat;
     private String lng;
@@ -47,16 +50,13 @@ public class RestaurantRepository {
 
     private void initMediator() {
         LiveData<List<Restaurant>> restaurantListApiSource = mRestaurantApiClient.getRestaurants();
-        mRestaurants.addSource(restaurantListApiSource, new Observer<List<Restaurant>>() {
-            @Override
-            public void onChanged(List<Restaurant> restaurants) {
-                if(restaurants != null) {
-                    mRestaurants.setValue(restaurants);
-                    doneQuery(restaurants);
-                } else {
-                    //search database cache
-                    doneQuery(null);
-                }
+        mRestaurants.addSource(restaurantListApiSource, restaurants -> {
+            if(restaurants != null) {
+                mRestaurants.setValue(restaurants);
+                doneQuery(restaurants);
+            } else {
+                //if we implement the caching part of repository then, search database cache here
+                doneQuery(null);
             }
         });
     }
@@ -94,6 +94,7 @@ public class RestaurantRepository {
     }
 
     public void getNextRestaurantPage() {
+        Log.d(TAG, "getNextRestaurantPage: " + "offset: "+ (offset + PAGE_ITEMS));
         getRestaurantsApi(lat, lng, offset + PAGE_ITEMS, limit);
     }
 }
