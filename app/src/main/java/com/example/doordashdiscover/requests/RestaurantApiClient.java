@@ -29,7 +29,6 @@ public class RestaurantApiClient {
     private final MutableLiveData<List<Restaurant>> mRestaurants;
 
     private final MutableLiveData<Boolean> mRestaurantRequestTimedOut = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mRestaurantsRequestTimedOut = new MutableLiveData<>();
 
     private RetrieveRestaurantRunnable mRetrieveRestaurantRunnable;
     private RetrieveRestaurantsRunnable mRetrieveRestaurantsRunnable;
@@ -59,10 +58,6 @@ public class RestaurantApiClient {
         return mRestaurantRequestTimedOut;
     }
 
-    public MutableLiveData<Boolean> isRestaurantsRequestTimedOut() {
-        return mRestaurantsRequestTimedOut;
-    }
-
     public void getRestaurantApi(String id) {
         if(mRetrieveRestaurantRunnable != null) {
             mRetrieveRestaurantRunnable = null;    //if a query has already executed in past, set it null
@@ -90,12 +85,10 @@ public class RestaurantApiClient {
 
         final Future handler = AppExecutors.getInstance().getNetworkIO().submit(mRetrieveRestaurantsRunnable);
 
-        mRestaurantsRequestTimedOut.setValue(false);
         AppExecutors.getInstance().getNetworkIO().schedule(new Runnable() {
             @Override
             public void run() {
                 //let the user know if it's timed out
-                mRestaurantsRequestTimedOut.setValue(true);
                 handler.cancel(true);
             }
         }, NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);

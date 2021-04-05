@@ -19,8 +19,8 @@ import java.util.List;
 public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int RESTAURANT_TYPE = 1;
-    private static final int LOADING_TYPE = 2;
-    private static final int EXHAUSTED_TYPE = 3;
+    private static final int LOADING_TYPE = 2;      //show loading view for pagination
+    private static final int EXHAUSTED_TYPE = 3;    //show exhausted view at the bottom of all results
     private static final String EXHAUSTED_ID = "ExhaustedId";
 
     private List<Restaurant> mRestaurants;
@@ -95,7 +95,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public void setQueryExhausted() {
-        if(!mRestaurants.get(mRestaurants.size()-1).getId().equals(EXHAUSTED_ID)) {
+        if(mRestaurants!= null && !mRestaurants.get(mRestaurants.size()-1).getId().equals(EXHAUSTED_ID)) {
             Restaurant exhaustedRestaurant = new Restaurant();
             exhaustedRestaurant.setId(EXHAUSTED_ID);
             mRestaurants.add(exhaustedRestaurant);

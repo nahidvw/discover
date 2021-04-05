@@ -15,13 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <TextView
             android:id="@+id/retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/retry_message"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/retry_string"
-            android:src="@drawable/ic_baseline_refresh_24"
+            android:padding="5dp"
+            android:drawablePadding="5dp"
+            app:drawableEndCompat="@drawable/ic_baseline_refresh_24"
             android:visibility="gone"/>
 
     </RelativeLayout>

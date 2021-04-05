@@ -23,10 +23,6 @@ public class RestaurantListViewModel extends ViewModel {
         return mRestaurantRepository.isQueryExhausted();
     }
 
-    public LiveData<Boolean> isRestaurantsRequestTimeout() {
-        return mRestaurantRepository.isRestaurantsRequestTimedOut();
-    }
-
     public void getRestaurantsApi(String lat, String lng, int offset, int limit) {
         mRestaurantRepository.getRestaurantsApi(lat, lng, offset, limit);
     }

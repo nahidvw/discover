@@ -79,10 +79,6 @@ public class RestaurantRepository {
         return mRestaurantApiClient.isRestaurantRequestTimedOut();
     }
 
-    public LiveData<Boolean> isRestaurantsRequestTimedOut() {
-        return mRestaurantApiClient.isRestaurantsRequestTimedOut();
-    }
-
     public void getRestaurantApi(String id) {
         mRestaurantApiClient.getRestaurantApi(id);
     }
