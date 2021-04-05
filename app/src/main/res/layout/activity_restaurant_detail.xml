@@ -59,10 +59,19 @@
                 android:textSize="@dimen/text_size" />
 
             <TextView
-                android:id="@+id/restaurant_details_rating"
+                android:id="@+id/restaurant_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/restaurant_details_description"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
+                android:text="@string/review_ratings" />
+
+            <TextView
+                android:id="@+id/restaurant_details_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/restaurant_status"
                 android:paddingTop="@dimen/padding"
                 android:paddingBottom="@dimen/padding"
                 android:text="@string/review_ratings" />
@@ -85,7 +94,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/restaurant_details_status"
+                    android:id="@+id/restaurant_status_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

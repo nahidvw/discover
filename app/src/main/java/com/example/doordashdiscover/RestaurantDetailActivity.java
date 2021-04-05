@@ -88,8 +88,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
             binding.restaurantDetailsName.setText(TextUtils.isEmpty(restaurant.getName()) ? "" : restaurant.getName());
             binding.restaurantDetailsDescription.setText(TextUtils.isEmpty(restaurant.getDescription()) ? "" : restaurant.getDescription());
-            binding.restaurantDetailsStatus.setText(TextUtils.isEmpty(restaurant.getStatus_type()) ? "" : restaurant.getStatus_type());
-            binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getAverage_Rating())) ? "" : String.valueOf(restaurant.getAverage_Rating()));
+            binding.restaurantStatus.setText(TextUtils.isEmpty(restaurant.getStatus()) ? "" : restaurant.getStatus());
+            binding.restaurantStatusType.setText(TextUtils.isEmpty(restaurant.getStatus_type()) ? "" : restaurant.getStatus_type());
+            binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDisplayRating())) ? "" : String.valueOf(restaurant.getDisplayRating()));
             binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDeliveryFee())) ? "" : String.valueOf(restaurant.getDeliveryFee()));
 
             binding.tagContainer.removeAllViews();
