@@ -64,16 +64,13 @@ public class RestaurantApiClient {
         }
         mRetrieveRestaurantRunnable = new RetrieveRestaurantRunnable(id);
 
-        final Future handler = AppExecutors.getInstance().getNetworkIO().submit(mRetrieveRestaurantRunnable);
+        final Future<?> handler = AppExecutors.getInstance().getNetworkIO().submit(mRetrieveRestaurantRunnable);
 
         mRestaurantRequestTimedOut.setValue(false);
-        AppExecutors.getInstance().getNetworkIO().schedule(new Runnable() {
-            @Override
-            public void run() {
-                //let the user know if it's timed out
-                mRestaurantRequestTimedOut.postValue(true);
-                handler.cancel(true);
-            }
+        AppExecutors.getInstance().getNetworkIO().schedule(() -> {
+            //let the user know if it's timed out
+            mRestaurantRequestTimedOut.postValue(true);
+            handler.cancel(true);
         }, NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
@@ -83,34 +80,26 @@ public class RestaurantApiClient {
         }
         mRetrieveRestaurantsRunnable = new RetrieveRestaurantsRunnable(lat, lng, offset, limit);
 
-        final Future handler = AppExecutors.getInstance().getNetworkIO().submit(mRetrieveRestaurantsRunnable);
+        final Future<?> handler = AppExecutors.getInstance().getNetworkIO().submit(mRetrieveRestaurantsRunnable);
 
-        AppExecutors.getInstance().getNetworkIO().schedule(new Runnable() {
-            @Override
-            public void run() {
-                //let the user know if it's timed out
-                handler.cancel(true);
-            }
+        AppExecutors.getInstance().getNetworkIO().schedule(() -> {
+            //let the user know if it's timed out
+            handler.cancel(true);
         }, NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
     private class RetrieveRestaurantRunnable implements Runnable {
 
         private final String id;
-        private boolean cancelRequest;
 
         public RetrieveRestaurantRunnable(String id) {
             this.id = id;
-            cancelRequest = false;
         }
 
         @Override
         public void run() {
             try {
                 Response<RestaurantDetails> response = getRestaurant(id).execute();  //this line will be executed in background thread
-                if(cancelRequest) {
-                    return;
-                }
 
                 if(response.code() == 200) {
                     if(response.body() != null) {
@@ -134,11 +123,6 @@ public class RestaurantApiClient {
         private Call<RestaurantDetails> getRestaurant(String id) {
             return ServiceGenerator.getRestaurantApi().getRestaurantDetail(id);
         }
-
-        private void cancelRequest() {
-            Log.d(TAG, "cancelRequest: canceling the restaurant detail request");
-            cancelRequest = true;
-        }
     }
 
     private class RetrieveRestaurantsRunnable implements Runnable {
@@ -147,41 +131,40 @@ public class RestaurantApiClient {
         private final String lng;
         private final int offset;
         private final int limit;
-        private boolean cancelRequest;
 
         public RetrieveRestaurantsRunnable(String lat, String lng, int offset, int limit) {
             this.lat = lat;
             this.lng = lng;
             this.offset = offset;
             this.limit = limit;
-            cancelRequest = false;
         }
 
         @Override
         public void run() {
             try {
                 Response<RestaurantResponse> response = getRestaurants(lat, lng, offset, limit).execute();  //this line will be executed in background thread
-                if(cancelRequest) {
-                    return;
-                }
 
                 if(response.code() == 200) {
-                    List<Restaurant> list = new ArrayList<>(((RestaurantResponse)response.body()).getRestaurants());
+                    if(response.body() != null) {
+                        List<Restaurant> list = new ArrayList<>(response.body().getRestaurants());
 
-                    //if we are not at the beginning of list, then keep adding restaurants in current list
-                    if (offset == 0) {
-                        mRestaurants.postValue(list);
-                    } else {
-                        List<Restaurant> currentRestaurants = mRestaurants.getValue();
-                        if(currentRestaurants != null) {
-                            currentRestaurants.addAll(list);
+                        //if we are not at the beginning of list, then keep adding restaurants in current list
+                        if (offset == 0) {
+                            mRestaurants.postValue(list);
+                        } else {
+                            List<Restaurant> currentRestaurants = mRestaurants.getValue();
+                            if (currentRestaurants != null) {
+                                currentRestaurants.addAll(list);
+                            }
+                            mRestaurants.postValue(currentRestaurants);
                         }
-                        mRestaurants.postValue(currentRestaurants);
                     }
                 } else {
-                    String error = response.errorBody().string();
-                    Log.e(TAG, "run: " + error);
-                    mRestaurants.postValue(null);
+                    if(response.errorBody() != null) {
+                        String error = response.errorBody().string();
+                        Log.e(TAG, "run: " + error);
+                        mRestaurants.postValue(null);
+                    }
                 }
 
             } catch (IOException e) {
@@ -197,21 +180,6 @@ public class RestaurantApiClient {
                     String.valueOf(offset),
                     String.valueOf(limit)
             );
-        }
-
-        private void cancelRequest() {
-            Log.d(TAG, "cancelRequest: canceling the search request");
-            cancelRequest = true;
-        }
-    }
-
-    public void cancelRequest() {
-        if(mRetrieveRestaurantsRunnable != null) {
-            mRetrieveRestaurantsRunnable.cancelRequest();
-        }
-
-        if(mRetrieveRestaurantRunnable != null) {
-            mRetrieveRestaurantRunnable.cancelRequest();
         }
     }
 }

@@ -70,7 +70,8 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             vh.name.setText(mRestaurants.get(position).getName());
             vh.description.setText(mRestaurants.get(position).getDescription());
             vh.status.setText(TextUtils.isEmpty(mRestaurants.get(position).getDisplayStatus())
-                    ? "" : getContext().getResources().getString(R.string.status_string, mRestaurants.get(position).getDisplayStatus()));
+                    ? getContext().getResources().getString(R.string.restaurant_closed_message)
+                    : getContext().getResources().getString(R.string.status_string, mRestaurants.get(position).getDisplayStatus()));
             vh.deliveryFee.setText(String.valueOf(mRestaurants.get(position).getDisplay_delivery_fee()));
 
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);

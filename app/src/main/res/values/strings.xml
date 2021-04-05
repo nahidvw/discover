@@ -6,6 +6,7 @@
     <string name="exhausted_string">No more results…</string>
     <string name="error_message">Error retrieving data, Check Network.</string>
     <string name="retry_message">Error retrieving data. Tap to retry.</string>
+    <string name="restaurant_closed_message">Closed</string>
 
 
     <string name="restaurant_name">Restaurant Name</string>
