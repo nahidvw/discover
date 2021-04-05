@@ -70,6 +70,16 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
                 }
             }
         });
+
+        mRestaurantListViewModel.isQueryExhausted().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean) {
+                    Log.d(TAG, "onChanged: query is exhausted");
+                    mRestaurantRecyclerAdapter.setQueryExhausted();
+                }
+            }
+        });
     }
 
     private void displayRetryScreen() {
@@ -106,7 +116,7 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
                 "37.422740",
                 "-122.139956",
                 0,
-                10);
+                100);
     }
 
     @Override

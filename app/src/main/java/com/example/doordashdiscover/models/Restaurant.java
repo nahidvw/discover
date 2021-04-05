@@ -78,7 +78,7 @@ public class Restaurant implements Parcelable {
 
     public String getDisplayStatus() {
         displayStatus = "";
-        if(status.isAsap_available() && status.getAsap_minutes_range().length != 0) {
+        if(status != null && status.isAsap_available() && status.getAsap_minutes_range().length != 0) {
             displayStatus = String.valueOf(status.getAsap_minutes_range()[0]);
         }
         return displayStatus;

@@ -19,6 +19,10 @@ public class RestaurantListViewModel extends ViewModel {
         return mRestaurantRepository.getRestaurants();
     }
 
+    public LiveData<Boolean> isQueryExhausted() {
+        return mRestaurantRepository.isQueryExhausted();
+    }
+
     public LiveData<Boolean> isRestaurantsRequestTimeout() {
         return mRestaurantRepository.isRestaurantsRequestTimedOut();
     }
@@ -28,6 +32,8 @@ public class RestaurantListViewModel extends ViewModel {
     }
 
     public void getNextRestaurantPage() {
-        mRestaurantRepository.getNextRestaurantPage();
+        if(!isQueryExhausted().getValue()) {
+            mRestaurantRepository.getNextRestaurantPage();
+        }
     }
 }

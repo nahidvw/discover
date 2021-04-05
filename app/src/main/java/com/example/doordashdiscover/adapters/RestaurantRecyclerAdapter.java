@@ -14,18 +14,18 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.doordashdiscover.R;
 import com.example.doordashdiscover.models.Restaurant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int RESTAURANT_TYPE = 1;
     private static final int LOADING_TYPE = 2;
-    private static final String LOADING_ID = "FakeLoadingId";
+    private static final int EXHAUSTED_TYPE = 3;
+    private static final String EXHAUSTED_ID = "ExhaustedId";
 
     private List<Restaurant> mRestaurants;
-    private OnRestaurantClickListener mOnRestaurantClickListener;
-    private Context mContext;
+    private final OnRestaurantClickListener mOnRestaurantClickListener;
+    private final Context mContext;
 
     public RestaurantRecyclerAdapter(OnRestaurantClickListener mOnRestaurantClickListener, Context context) {
         this.mOnRestaurantClickListener = mOnRestaurantClickListener;
@@ -44,7 +44,13 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             case LOADING_TYPE: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.layout_loading_list_item, parent, false);
-                return new LoadingViewHolder(view);
+                return new SpecialItemViewHolder(view);
+            }
+
+            case EXHAUSTED_TYPE: {
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.layout_query_exhausted_item, parent, false);
+                return new SpecialItemViewHolder(view);
             }
 
             case RESTAURANT_TYPE:
@@ -77,31 +83,24 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        if(mRestaurants.get(position).getId().equals(LOADING_ID)) {
+        if (position != 0
+                && position == mRestaurants.size() - 1
+                && !mRestaurants.get(position).getId().equals(EXHAUSTED_ID)) {
             return LOADING_TYPE;
-        } else if (position != 0 && position == mRestaurants.size() - 1) {
-            return LOADING_TYPE;
+        } else if(mRestaurants.get(position).getId().equals(EXHAUSTED_ID)) {
+            return EXHAUSTED_TYPE;
         } else {
             return RESTAURANT_TYPE;
         }
     }
 
-    public void displayLoading() {
-        if(!isLoading()) {
-            Restaurant item = new Restaurant();
-            item.setId(LOADING_ID);
-            List<Restaurant> list = new ArrayList<>();
-            list.add(item);
-            mRestaurants = list;
+    public void setQueryExhausted() {
+        if(!mRestaurants.get(mRestaurants.size()-1).getId().equals(EXHAUSTED_ID)) {
+            Restaurant exhaustedRestaurant = new Restaurant();
+            exhaustedRestaurant.setId(EXHAUSTED_ID);
+            mRestaurants.add(exhaustedRestaurant);
             notifyDataSetChanged();
         }
-    }
-
-    private boolean isLoading() {
-        if (mRestaurants != null && mRestaurants.size() > 0) {
-            return mRestaurants.get(mRestaurants.size() - 1).getId().equals(LOADING_ID);
-        }
-        return false;
     }
 
     @Override

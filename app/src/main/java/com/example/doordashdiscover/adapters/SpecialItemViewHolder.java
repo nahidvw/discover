@@ -5,8 +5,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class LoadingViewHolder extends RecyclerView.ViewHolder {
-    public LoadingViewHolder(@NonNull View itemView) {
+public class SpecialItemViewHolder extends RecyclerView.ViewHolder {
+    public SpecialItemViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 }

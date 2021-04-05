@@ -3,6 +3,7 @@
     <string name="tags_label">Tags:</string>
     <string name="status_string">%1s Mins</string>
     <string name="retry_string">Retry</string>
+    <string name="exhausted_string">No more results…</string>
 
 
     <string name="restaurant_name">Restaurant Name</string>

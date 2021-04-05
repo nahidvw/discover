@@ -1,6 +1,9 @@
 package com.example.doordashdiscover.repositories;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.models.RestaurantDetails;
@@ -9,9 +12,13 @@ import com.example.doordashdiscover.requests.RestaurantApiClient;
 import java.util.List;
 
 public class RestaurantRepository {
-    private static final int PAGE_ITEMS = 10;
+    private static final int PAGE_ITEMS = 100;
     private static RestaurantRepository instance;
     private final RestaurantApiClient mRestaurantApiClient;
+    private MutableLiveData<Boolean> mIsQueryExhausted = new MutableLiveData<>();
+
+    //use MediatorLiveData to make a change before returning live data
+    private MediatorLiveData<List<Restaurant>> mRestaurants = new MediatorLiveData<>();
 
     private String lat;
     private String lng;
@@ -27,6 +34,7 @@ public class RestaurantRepository {
 
     private RestaurantRepository() {
         mRestaurantApiClient = RestaurantApiClient.getInstance();
+        initMediator();
     }
 
     public LiveData<RestaurantDetails> getRestaurant() {
@@ -34,7 +42,37 @@ public class RestaurantRepository {
     }
 
     public LiveData<List<Restaurant>> getRestaurants() {
-        return mRestaurantApiClient.getRestaurants();
+        return mRestaurants;
+    }
+
+    private void initMediator() {
+        LiveData<List<Restaurant>> restaurantListApiSource = mRestaurantApiClient.getRestaurants();
+        mRestaurants.addSource(restaurantListApiSource, new Observer<List<Restaurant>>() {
+            @Override
+            public void onChanged(List<Restaurant> restaurants) {
+                if(restaurants != null) {
+                    mRestaurants.setValue(restaurants);
+                    doneQuery(restaurants);
+                } else {
+                    //search database cache
+                    doneQuery(null);
+                }
+            }
+        });
+    }
+
+    private void doneQuery(List<Restaurant> list) {
+        if(list != null) {
+            if(list.size() % PAGE_ITEMS != 0) {
+                mIsQueryExhausted.setValue(true);
+            }
+        } else {
+            mIsQueryExhausted.setValue(true);
+        }
+    }
+
+    public MutableLiveData<Boolean> isQueryExhausted() {
+        return mIsQueryExhausted;
     }
 
     public LiveData<Boolean> isRestaurantRequestTimedOut() {
@@ -54,6 +92,8 @@ public class RestaurantRepository {
         this.lng = lng;
         this.offset = offset;
         this.limit = limit;
+
+        mIsQueryExhausted.setValue(false);
         mRestaurantApiClient.getRestaurantsApi(lat, lng, offset, limit);
     }
 
