@@ -1,7 +1,6 @@
 package com.example.doordashdiscover.repositories;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.doordashdiscover.models.Restaurant;
 import com.example.doordashdiscover.models.RestaurantDetails;
@@ -36,6 +35,14 @@ public class RestaurantRepository {
 
     public LiveData<List<Restaurant>> getRestaurants() {
         return mRestaurantApiClient.getRestaurants();
+    }
+
+    public LiveData<Boolean> isRestaurantRequestTimedOut() {
+        return mRestaurantApiClient.isRestaurantRequestTimedOut();
+    }
+
+    public LiveData<Boolean> isRestaurantsRequestTimedOut() {
+        return mRestaurantApiClient.isRestaurantsRequestTimedOut();
     }
 
     public void getRestaurantApi(String id) {

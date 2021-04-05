@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".RestaurantListActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/parent_scrollview"
+        app:layout_constraintEnd_toStartOf="@+id/parent_scrollview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/retry_string"
+            android:src="@drawable/ic_baseline_refresh_24"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/restaurant_List"
         android:layout_height="match_parent"

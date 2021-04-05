@@ -2,6 +2,7 @@
     <string name="app_name">Discover</string>
     <string name="tags_label">Tags:</string>
     <string name="status_string">%1s Mins</string>
+    <string name="retry_string">Retry</string>
 
 
     <string name="restaurant_name">Restaurant Name</string>
@@ -12,5 +13,5 @@
     <string name="delivery_cost">$0.00</string>
     <string name="review_ratings">4.0 / 5.0(1234ratings)</string>
     <string name="restaurant_type">Italian</string>
-    <string name="error_message">It\'s not you, it\'s us..!! </string>
+    <string name="error_message">Error retrieving data, Check Network </string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.doordashdiscover;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     public static final String RESTAURANT_DETAIL_EXTRA = "RestaurantDetail";
 
     private RestaurantViewModel mRestaurantViewModel;
-    private ActivityRestaurantDetailBinding binding;
+    private ActivityRestaurantDetailBinding binding;    //using view binding
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +41,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         mRestaurantViewModel = new ViewModelProvider(this).get(RestaurantViewModel.class);
+
         binding.detailLoadingSpinner.setVisibility(View.VISIBLE);
+        binding.errorView.setVisibility(View.GONE);
+
         subscribeObservers();
         getIncomingIntent();
     }
@@ -49,12 +53,29 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         mRestaurantViewModel.getRestaurant().observe(this, restaurant -> {
             if (restaurant != null) {
                 if(restaurant.getId().equals(mRestaurantViewModel.getRestaurantId())) {
+                    mRestaurantViewModel.setRetrieveRestaurant(true);
+
                     Objects.requireNonNull(getSupportActionBar()).setTitle(restaurant.getName());
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     setRestaurantDetailViewProperties(restaurant);
                 }
             }
         });
+
+        mRestaurantViewModel.isRestaurantRequestTimeout().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean && !mRestaurantViewModel.didRetrieveRestaurant()) {
+                    Log.d(TAG, "onChanged: timed out...");
+                    displayErrorScreen();
+                }
+            }
+        });
+    }
+
+    private void displayErrorScreen() {
+        binding.detailLoadingSpinner.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.VISIBLE);
     }
 
     private void getIncomingIntent() {
@@ -67,12 +88,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void showParent() {
         binding.parentScrollview.setVisibility(View.VISIBLE);
+        binding.detailLoadingSpinner.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.GONE);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -93,6 +116,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDisplayRating())) ? "" : String.valueOf(restaurant.getDisplayRating()));
             binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDeliveryFee())) ? "" : String.valueOf(restaurant.getDeliveryFee()));
 
+            //adding view programmatically in a layout
             binding.tagContainer.removeAllViews();
             for(String tag : restaurant.getTags()) {
                 TextView textView = new TextView(this);
@@ -106,7 +130,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             }
 
             showParent();
-            binding.detailLoadingSpinner.setVisibility(View.GONE);
         }
     }
 }
