@@ -112,7 +112,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.restaurantStatus.setText(TextUtils.isEmpty(restaurant.getStatus()) ? "" : restaurant.getStatus());
             binding.restaurantStatusType.setText(TextUtils.isEmpty(restaurant.getStatus_type()) ? "" : restaurant.getStatus_type());
             binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDisplayRating())) ? "" : String.valueOf(restaurant.getDisplayRating()));
-            binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDelivery_Fee())) ? "" : String.valueOf(restaurant.getDelivery_Fee()));
 
             //adding view programmatically in a layout
             binding.tagContainer.removeAllViews();

@@ -7,15 +7,10 @@
     <string name="error_message">Error retrieving data, Check Network.</string>
     <string name="retry_message">Error retrieving data. Tap to retry.</string>
     <string name="restaurant_closed_message">Closed</string>
-
-
     <string name="restaurant_name">Restaurant Name</string>
-    <string name="restaurant_desc">Food, cuisine, type</string>
-    <string name="restaurant_cost">$50</string>
-    <string name="open_still">Open</string>
-    <string name="arriving_minutes">15 mins</string>
-    <string name="delivery_cost">$0.00</string>
-    <string name="review_ratings">4.0 / 5.0(1234ratings)</string>
-    <string name="restaurant_type">Italian</string>
-
+    <string name="restaurant_description">Food, cuisine, type</string>
+    <string name="restaurant_delivery_fee">Delivery Fee</string>
+    <string name="arriving_status">Arriving status</string>
+    <string name="open_status">Status</string>
+    <string name="restaurant_rating">Rating</string>
 </resources>
