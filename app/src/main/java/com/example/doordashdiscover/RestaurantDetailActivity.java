@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -60,13 +59,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             }
         });
 
-        mRestaurantViewModel.isRestaurantRequestTimeout().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean && !mRestaurantViewModel.didRetrieveRestaurant()) {
-                    Log.d(TAG, "onChanged: timed out...");
-                    displayErrorScreen();
-                }
+        mRestaurantViewModel.isRestaurantRequestTimeout().observe(this, aBoolean -> {
+            if(aBoolean && !mRestaurantViewModel.didRetrieveRestaurant()) {
+                Log.d(TAG, "onChanged: timed out...");
+                displayErrorScreen();
             }
         });
     }
