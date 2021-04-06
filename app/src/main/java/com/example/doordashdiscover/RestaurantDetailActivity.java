@@ -1,6 +1,5 @@
 package com.example.doordashdiscover;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -114,7 +112,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.restaurantStatus.setText(TextUtils.isEmpty(restaurant.getStatus()) ? "" : restaurant.getStatus());
             binding.restaurantStatusType.setText(TextUtils.isEmpty(restaurant.getStatus_type()) ? "" : restaurant.getStatus_type());
             binding.restaurantDetailsRating.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDisplayRating())) ? "" : String.valueOf(restaurant.getDisplayRating()));
-            binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDeliveryFee())) ? "" : String.valueOf(restaurant.getDeliveryFee()));
+            binding.restaurantDetailsDeliveryFee.setText(TextUtils.isEmpty(String.valueOf(restaurant.getDelivery_Fee())) ? "" : String.valueOf(restaurant.getDelivery_Fee()));
 
             //adding view programmatically in a layout
             binding.tagContainer.removeAllViews();

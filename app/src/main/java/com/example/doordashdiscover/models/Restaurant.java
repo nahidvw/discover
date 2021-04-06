@@ -3,6 +3,8 @@ package com.example.doordashdiscover.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 import com.example.doordashdiscover.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -131,4 +133,19 @@ public class Restaurant implements Parcelable {
             return new Restaurant[size];
         }
     };
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == null) {
+            return false;
+        }
+
+        if(getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Restaurant restaurant = (Restaurant) obj;
+        return restaurant.getId().equals(id)
+                && restaurant.getName().equals(name);
+    }
 }

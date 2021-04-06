@@ -13,7 +13,7 @@ public class RestaurantDetails implements Parcelable {
     private String[] tags;
     private String status;
     private String status_type;
-    private double deliveryFee;
+    private double delivery_Fee;
     private double average_rating;
     private int number_of_ratings;
     private double composite_score;
@@ -25,7 +25,7 @@ public class RestaurantDetails implements Parcelable {
     public RestaurantDetails() {
     }
 
-    public RestaurantDetails(String id, String name, String description, String cover_img_url, String[] tags, String status, String status_type, double deliveryFee, double average_rating, int number_of_ratings, double composite_score, int asap_time) {
+    public RestaurantDetails(String id, String name, String description, String cover_img_url, String[] tags, String status, String status_type, double delivery_Fee, double average_rating, int number_of_ratings, double composite_score, int asap_time) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,7 +33,7 @@ public class RestaurantDetails implements Parcelable {
         this.tags = tags;
         this.status = status;
         this.status_type = status_type;
-        this.deliveryFee = deliveryFee;
+        this.delivery_Fee = delivery_Fee;
         this.average_rating = average_rating;
         this.number_of_ratings = number_of_ratings;
         this.composite_score = composite_score;
@@ -48,7 +48,7 @@ public class RestaurantDetails implements Parcelable {
         tags = in.createStringArray();
         status = in.readString();
         status_type = in.readString();
-        deliveryFee = in.readDouble();
+        delivery_Fee = in.readDouble();
         average_rating = in.readDouble();
         number_of_ratings = in.readInt();
         composite_score = in.readDouble();
@@ -123,12 +123,12 @@ public class RestaurantDetails implements Parcelable {
         this.status_type = status_type;
     }
 
-    public double getDeliveryFee() {
-        return deliveryFee;
+    public double getDelivery_Fee() {
+        return delivery_Fee;
     }
 
-    public void setDeliveryFee(double deliveryFee) {
-        this.deliveryFee = deliveryFee;
+    public void setDelivery_Fee(double delivery_Fee) {
+        this.delivery_Fee = delivery_Fee;
     }
 
     public double getAverage_rating() {
@@ -178,7 +178,7 @@ public class RestaurantDetails implements Parcelable {
                 ", tags=" + Arrays.toString(tags) +
                 ", status='" + status + '\'' +
                 ", status_type='" + status_type + '\'' +
-                ", deliveryFee=" + deliveryFee +
+                ", deliveryFee=" + delivery_Fee +
                 ", average_Rating=" + average_rating +
                 ", number_of_Ratings=" + number_of_ratings +
                 ", composite_score=" + composite_score +
@@ -200,7 +200,7 @@ public class RestaurantDetails implements Parcelable {
         dest.writeStringArray(tags);
         dest.writeString(status);
         dest.writeString(status_type);
-        dest.writeDouble(deliveryFee);
+        dest.writeDouble(delivery_Fee);
         dest.writeDouble(average_rating);
         dest.writeInt(number_of_ratings);
         dest.writeDouble(composite_score);
