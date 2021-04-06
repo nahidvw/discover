@@ -28,7 +28,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     public static final String RESTAURANT_DETAIL_EXTRA = "RestaurantDetail";
 
     private RestaurantViewModel mRestaurantViewModel;
-    private ActivityRestaurantDetailBinding binding;    //using viewbinding
+    private ActivityRestaurantDetailBinding binding;    //using view binding
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
