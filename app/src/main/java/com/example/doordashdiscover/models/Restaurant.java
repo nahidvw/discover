@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-import com.example.doordashdiscover.R;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Restaurant implements Parcelable {
     private String id;
     private String name;
@@ -16,7 +12,6 @@ public class Restaurant implements Parcelable {
     private String cover_img_url;
     private String display_delivery_fee;
     private Status status;
-    private transient String displayStatus;
 
     public Restaurant(){
     }
@@ -79,7 +74,7 @@ public class Restaurant implements Parcelable {
     }
 
     public String getDisplayStatus() {
-        displayStatus = "";
+        String displayStatus = "";
         if(status != null && status.isAsap_available() && status.getAsap_minutes_range().length != 0) {
             displayStatus = String.valueOf(status.getAsap_minutes_range()[0]);
         }

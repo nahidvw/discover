@@ -6,4 +6,5 @@ public class Constants {
     public static final String QUERY_LATITUDE = "37.422740";
     public static final String QUERY_LONGITUDE = "-122.139956";
     public static final int PAGE_ITEMS = 50;
+    public static final double RATING = 5.0;
 }

@@ -3,6 +3,8 @@ package com.example.doordashdiscover.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.doordashdiscover.util.Constants;
+
 import java.util.Arrays;
 
 public class RestaurantDetails implements Parcelable {
@@ -13,19 +15,13 @@ public class RestaurantDetails implements Parcelable {
     private String[] tags;
     private String status;
     private String status_type;
-    private double delivery_Fee;
     private double average_rating;
     private int number_of_ratings;
-    private double composite_score;
-    private int asap_time;
-    private transient String displayRating;
-
-    private static final double RATING = 5.0;
 
     public RestaurantDetails() {
     }
 
-    public RestaurantDetails(String id, String name, String description, String cover_img_url, String[] tags, String status, String status_type, double delivery_Fee, double average_rating, int number_of_ratings, double composite_score, int asap_time) {
+    public RestaurantDetails(String id, String name, String description, String cover_img_url, String[] tags, String status, String status_type, double average_rating, int number_of_ratings, int asap_time) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,11 +29,8 @@ public class RestaurantDetails implements Parcelable {
         this.tags = tags;
         this.status = status;
         this.status_type = status_type;
-        this.delivery_Fee = delivery_Fee;
         this.average_rating = average_rating;
         this.number_of_ratings = number_of_ratings;
-        this.composite_score = composite_score;
-        this.asap_time = asap_time;
     }
 
     protected RestaurantDetails(Parcel in) {
@@ -48,11 +41,8 @@ public class RestaurantDetails implements Parcelable {
         tags = in.createStringArray();
         status = in.readString();
         status_type = in.readString();
-        delivery_Fee = in.readDouble();
         average_rating = in.readDouble();
         number_of_ratings = in.readInt();
-        composite_score = in.readDouble();
-        asap_time = in.readInt();
     }
 
     public static final Creator<RestaurantDetails> CREATOR = new Creator<RestaurantDetails>() {
@@ -123,14 +113,6 @@ public class RestaurantDetails implements Parcelable {
         this.status_type = status_type;
     }
 
-    public double getDelivery_Fee() {
-        return delivery_Fee;
-    }
-
-    public void setDelivery_Fee(double delivery_Fee) {
-        this.delivery_Fee = delivery_Fee;
-    }
-
     public double getAverage_rating() {
         return average_rating;
     }
@@ -147,25 +129,8 @@ public class RestaurantDetails implements Parcelable {
         this.number_of_ratings = number_of_ratings;
     }
 
-    public double getComposite_score() {
-        return composite_score;
-    }
-
-    public void setComposite_score(double composite_score) {
-        this.composite_score = composite_score;
-    }
-
-    public int getAsap_time() {
-        return asap_time;
-    }
-
-    public void setAsap_time(int asap_time) {
-        this.asap_time = asap_time;
-    }
-
     public String getDisplayRating() {
-        displayRating = average_rating + " / " + RATING + " (" + number_of_ratings + " ratings)";   //this can be done in elegant way
-        return displayRating;
+        return average_rating + " / " + Constants.RATING + " (" + number_of_ratings + " ratings)";
     }
 
     @Override
@@ -178,11 +143,8 @@ public class RestaurantDetails implements Parcelable {
                 ", tags=" + Arrays.toString(tags) +
                 ", status='" + status + '\'' +
                 ", status_type='" + status_type + '\'' +
-                ", deliveryFee=" + delivery_Fee +
                 ", average_Rating=" + average_rating +
                 ", number_of_Ratings=" + number_of_ratings +
-                ", composite_score=" + composite_score +
-                ", asap_time=" + asap_time +
                 '}';
     }
 
@@ -200,10 +162,7 @@ public class RestaurantDetails implements Parcelable {
         dest.writeStringArray(tags);
         dest.writeString(status);
         dest.writeString(status_type);
-        dest.writeDouble(delivery_Fee);
         dest.writeDouble(average_rating);
         dest.writeInt(number_of_ratings);
-        dest.writeDouble(composite_score);
-        dest.writeInt(asap_time);
     }
 }
